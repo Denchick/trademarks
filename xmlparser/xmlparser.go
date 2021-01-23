@@ -62,7 +62,7 @@ func GetTrademarks(directory string) []models.Trademark {
 		}
 
 		// TODO extract business logic from here
-		if xmlTrademark.OperationCode == "Insert" && xmlTrademark.MarkFeature == "Word" && xmlTrademark.MarkCurrentStatusCodeType == "Registered" {
+		if xmlTrademark.OperationCode == "Insert" && xmlTrademark.MarkFeature == "Word" && xmlTrademark.MarkCurrentStatusCode == "Registered" {
 			trademarks = append(trademarks, *xmlTrademark.ToTrademark())
 		}
 	}
