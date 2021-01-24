@@ -35,9 +35,34 @@ type XMLTrademark struct {
 	Name                    string   `xml:"WordMarkSpecification>MarkVerbalElementText"`
 }
 
+// DBTrademark is database representation of trademark model
+type DBTrademark struct {
+	ID                      uint   `gorm:"primaryKey"`
+	ApplicationNumber       string `gorm:"unique"`
+	ApplicationDate         string
+	RegistrationDate        string
+	ApplicationLanguageCode string
+	SecondLanguageCode      string
+	ExpiryDate              string
+	Name                    string `gorm:"index"`
+}
+
 // ToTrademark converts XMLTrademark to Trademark
 func (trademark *XMLTrademark) ToTrademark() *Trademark {
 	return &Trademark{
+		ApplicationNumber:       trademark.ApplicationNumber,
+		ApplicationDate:         trademark.ApplicationDate,
+		RegistrationDate:        trademark.RegistrationDate,
+		ApplicationLanguageCode: trademark.ApplicationLanguageCode,
+		SecondLanguageCode:      trademark.SecondLanguageCode,
+		ExpiryDate:              trademark.ExpiryDate,
+		Name:                    trademark.Name,
+	}
+}
+
+// ToDB converts Trademark to DBTrademark
+func (trademark *Trademark) ToDB() *DBTrademark {
+	return &DBTrademark{
 		ApplicationNumber:       trademark.ApplicationNumber,
 		ApplicationDate:         trademark.ApplicationDate,
 		RegistrationDate:        trademark.RegistrationDate,

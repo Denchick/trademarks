@@ -11,6 +11,7 @@ import (
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
 )
 
+// TODO move to initdb
 func parseXML(filepath string) (*models.XMLTrademark, error) {
 	xmlFile, err := os.Open(filepath)
 	if err != nil {

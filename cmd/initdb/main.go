@@ -10,6 +10,7 @@ import (
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/xmlparser"
 )
 
+// rename to xml2csv
 func getXMLsDirectory() string {
 	directory := flag.String("directory", "", "Path to directory with XMLs")
 	flag.Parse()
