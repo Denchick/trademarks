@@ -1,4 +1,4 @@
-package xmlparser
+package main
 
 import (
 	"encoding/xml"
@@ -11,7 +11,6 @@ import (
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
 )
 
-// TODO move to initdb
 func parseXML(filepath string) (*models.XMLTrademark, error) {
 	xmlFile, err := os.Open(filepath)
 	if err != nil {
@@ -30,7 +29,7 @@ func parseXML(filepath string) (*models.XMLTrademark, error) {
 }
 
 func getXMLPaths(rootpath string) ([]string, error) {
-	xmlPaths := make([]string, 0, 10) // TODO why 10?
+	var xmlPaths []string
 	err := filepath.Walk(rootpath, func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil
@@ -46,8 +45,7 @@ func getXMLPaths(rootpath string) ([]string, error) {
 	return xmlPaths, nil
 }
 
-// GetTrademarks parsing trademarks from XMLs in directory
-func GetTrademarks(directory string) []models.Trademark {
+func getTrademarks(directory string) []models.Trademark {
 	xmlPaths, err := getXMLPaths(directory)
 	if err != nil {
 		log.Fatal(err)

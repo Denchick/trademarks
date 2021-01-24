@@ -17,14 +17,10 @@ func main() {
 }
 
 func run() error {
-	// Init repository store (with mysql/postgresql inside)
 	store, err := store.New()
 	if err != nil {
 		return errors.Wrap(err, "store.New failed")
 	}
-
-	// Init controllers
-	trademarksController := controllers.NewTrademark(store)
 
 	e := echo.New()
 
@@ -32,6 +28,7 @@ func run() error {
 	v1 := e.Group("/v1")
 
 	// Trademark routes
+	trademarksController := controllers.NewTrademark(store)
 	trademarkRoutes := v1.Group("/trademarks")
 	trademarkRoutes.GET("", trademarksController.Get)
 

@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/xmlparser"
 )
 
 // rename to xml2csv
@@ -20,10 +18,11 @@ func getXMLsDirectory() string {
 func main() {
 	xmlsDirectory := getXMLsDirectory()
 	if len(xmlsDirectory) == 0 {
-		fmt.Println("Usage: ./initdb --directory ") // TODO improve usage example
+		fmt.Println("Generates csv file with information about trademarks for importing into database.")
+		fmt.Println("Usage: ./xml2csv --directory /path/to/xmls")
 		return
 	}
-	trademarks := xmlparser.GetTrademarks(xmlsDirectory)
+	trademarks := getTrademarks(xmlsDirectory)
 	log.Printf("Parsed %d trademarks successfully\n", len(trademarks))
 
 	csvfile, err := os.Create("output.csv")
