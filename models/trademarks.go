@@ -1,6 +1,10 @@
 package models
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+
+	"gorm.io/gorm"
+)
 
 // Trademark is trademark model
 type Trademark struct {
@@ -37,7 +41,7 @@ type XMLTrademark struct {
 
 // DBTrademark is database representation of trademark model
 type DBTrademark struct {
-	ID                      uint   `gorm:"primaryKey"`
+	gorm.Model
 	ApplicationNumber       string `gorm:"unique"`
 	ApplicationDate         string
 	RegistrationDate        string
@@ -49,6 +53,19 @@ type DBTrademark struct {
 
 // ToTrademark converts XMLTrademark to Trademark
 func (trademark *XMLTrademark) ToTrademark() *Trademark {
+	return &Trademark{
+		ApplicationNumber:       trademark.ApplicationNumber,
+		ApplicationDate:         trademark.ApplicationDate,
+		RegistrationDate:        trademark.RegistrationDate,
+		ApplicationLanguageCode: trademark.ApplicationLanguageCode,
+		SecondLanguageCode:      trademark.SecondLanguageCode,
+		ExpiryDate:              trademark.ExpiryDate,
+		Name:                    trademark.Name,
+	}
+}
+
+// ToTrademark converts DBTrademark to Trademark
+func (trademark *DBTrademark) ToTrademark() *Trademark {
 	return &Trademark{
 		ApplicationNumber:       trademark.ApplicationNumber,
 		ApplicationDate:         trademark.ApplicationDate,

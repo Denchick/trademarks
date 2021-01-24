@@ -19,9 +19,15 @@ func NewTrademark(store *store.Store) *TrademarkController {
 	}
 }
 
-// Get returns file by ID
+// Get returns trademark by ID
 func (controller *TrademarkController) Get(c echo.Context) error {
 	name := c.QueryParam("name")
-	fuzzy := c.QueryParam("fuzzy")
-	return c.String(http.StatusOK, "team:"+name+", member:"+fuzzy)
+	useFuzzy := c.QueryParam("searchFuzzy")
+	trademark, err := controller.store.Trademark.FindTrademarkByName(c.Request().Context(), name, useFuzzy == "true")
+
+	if err != nil || trademark == nil { // TODO impove error handling
+		return echo.NewHTTPError(http.StatusNotFound, "Could not get trademark")
+	}
+
+	return c.JSON(http.StatusOK, trademark.ToTrademark())
 }

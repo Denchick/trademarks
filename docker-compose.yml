@@ -3,20 +3,23 @@ version: '3.1'
 services:
 
   server:
+    environment: 
+      - PG_URL=postgres://postgres:postgres@postgres/db_trademarks?sslmode=disable
+      - LOG_LEVEL=debug
     build: ./
     command: ["./server"]
     ports:
       - 1323:1323
     depends_on:
-      - db
+      - postgres
 
-  db:
+  postgres:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: example
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db_trademarks
     ports:
       - 7777:5432
 

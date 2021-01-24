@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-// rename to xml2csv
+// rename to xml2sql
 func getXMLsDirectory() string {
 	directory := flag.String("directory", "", "Path to directory with XMLs")
 	flag.Parse()
@@ -33,7 +33,7 @@ func main() {
 
 	defer csvfile.Close()
 	writer := csv.NewWriter(csvfile)
-	writer.Write([]string{"ApplicationNumber", "ApplicationDate", "RegistrationDate", "ApplicationLanguageCode", "SecondLanguageCode", "ExpiryDate", "Name"})
+	writer.Write([]string{"application_number", "application_date", "registration_date", "application_language_code", "second_language_code", "expiry_date", "name"})
 	for _, trademark := range trademarks {
 		record := []string{trademark.ApplicationNumber, trademark.ApplicationDate, trademark.RegistrationDate, trademark.ApplicationLanguageCode, trademark.SecondLanguageCode, trademark.ExpiryDate, trademark.Name}
 		err := writer.Write(record)

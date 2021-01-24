@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
+	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/config"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/store/repositories"
 	"gorm.io/driver/postgres"
@@ -12,8 +13,7 @@ import (
 
 // TrademarkRepository is a store for trademarks
 type TrademarkRepository interface {
-	FindTrademarkByName(context.Context, string) (*models.DBTrademark, error)
-	FuzzyFindTrademarkByName(context.Context, string) (*models.DBTrademark, error)
+	FindTrademarkByName(context.Context, string, bool) (*models.DBTrademark, error)
 }
 
 // Store contains all repositories
@@ -24,8 +24,8 @@ type Store struct {
 
 // New creates new store
 func New() (*Store, error) {
-	dsn := "host=localhost port=7777 user=volkov dbname=trademarksdb password=trademarks"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	cfg := config.Get()
+	db, err := gorm.Open(postgres.Open(cfg.PgURL), &gorm.Config{})
 
 	if err != nil {
 		return nil, errors.Wrap(err, "database connection failed")
@@ -34,6 +34,7 @@ func New() (*Store, error) {
 	if db != nil {
 		store.DB = db
 		store.Trademark = repositories.NewTrademarkRepository(db)
+		db.AutoMigrate(&models.DBTrademark{})
 	}
 
 	return &store, nil
