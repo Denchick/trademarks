@@ -30,12 +30,12 @@ func New() (*Store, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "database connection failed")
 	}
-	var store Store
-	if db != nil {
-		store.DB = db
-		store.Trademark = repositories.NewTrademarkRepository(db)
-		db.AutoMigrate(&models.DBTrademark{})
+	var store Store = Store{
+		DB:        db,
+		Trademark: repositories.NewTrademarkRepository(db),
 	}
+	db.AutoMigrate(&models.DBTrademark{})
+	db.Raw("CREATE EXTENSION pg_trgm;")
 
 	return &store, nil
 }

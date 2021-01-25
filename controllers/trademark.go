@@ -20,10 +20,11 @@ func NewTrademark(store *store.Store) *TrademarkController {
 }
 
 // Get returns trademark by ID
-func (controller *TrademarkController) Get(c echo.Context) error {
+func (controller *TrademarkController) Get(c echo.Context) error { // TODO create OpenAPI specification
+	// TODO search should be case insensitive
 	name := c.QueryParam("name")
-	useFuzzy := c.QueryParam("searchFuzzy")
-	trademark, err := controller.store.Trademark.FindTrademarkByName(c.Request().Context(), name, useFuzzy == "true")
+	fuzzily := c.QueryParam("fuzzily")
+	trademark, err := controller.store.Trademark.FindTrademarkByName(c.Request().Context(), name, fuzzily == "true")
 
 	if err != nil || trademark == nil { // TODO impove error handling
 		return echo.NewHTTPError(http.StatusNotFound, "Could not get trademark")

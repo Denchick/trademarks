@@ -2,8 +2,6 @@ package models
 
 import (
 	"encoding/xml"
-
-	"gorm.io/gorm"
 )
 
 // Trademark is trademark model
@@ -41,7 +39,7 @@ type XMLTrademark struct {
 
 // DBTrademark is database representation of trademark model
 type DBTrademark struct {
-	gorm.Model
+	ID                      uint
 	ApplicationNumber       string `gorm:"unique"`
 	ApplicationDate         string
 	RegistrationDate        string
