@@ -13,7 +13,8 @@ import (
 
 // TrademarkRepository is a store for trademarks
 type TrademarkRepository interface {
-	FindTrademarkByName(context.Context, string, bool) (*models.DBTrademark, error)
+	FindTrademarkByName(context.Context, string) (*models.DBTrademark, error)
+	FindSimilarTrademarks(ctx context.Context, name string) ([]*models.DBTrademark, error)
 }
 
 // Store contains all repositories

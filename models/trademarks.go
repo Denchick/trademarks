@@ -15,6 +15,8 @@ type Trademark struct {
 	Name                    string
 }
 
+// TODO move XML models to xmlparser
+
 // XMLRoot helps to parse XML tree
 type XMLRoot struct {
 	Transaction  xml.Name     `xml:"Transaction"`

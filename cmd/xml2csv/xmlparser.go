@@ -45,14 +45,14 @@ func getXMLPaths(rootpath string) ([]string, error) {
 	return xmlPaths, nil
 }
 
-func getTrademarks(directory string) []models.Trademark {
+func getTrademarks(directory string) []*models.Trademark {
 	xmlPaths, err := getXMLPaths(directory)
 	if err != nil {
 		log.Fatal(err)
-		return make([]models.Trademark, 0)
+		return make([]*models.Trademark, 0)
 	}
 
-	trademarks := make([]models.Trademark, 0, len(xmlPaths))
+	trademarks := make([]*models.Trademark, 0, len(xmlPaths))
 	for _, pathToXML := range xmlPaths {
 		xmlTrademark, err := parseXML(pathToXML)
 		if err != nil {
@@ -62,7 +62,7 @@ func getTrademarks(directory string) []models.Trademark {
 
 		// TODO extract business logic from here
 		if xmlTrademark.OperationCode == "Insert" && xmlTrademark.MarkFeature == "Word" && xmlTrademark.MarkCurrentStatusCode == "Registered" {
-			trademarks = append(trademarks, *xmlTrademark.ToTrademark())
+			trademarks = append(trademarks, xmlTrademark.ToTrademark())
 		}
 	}
 	return trademarks
