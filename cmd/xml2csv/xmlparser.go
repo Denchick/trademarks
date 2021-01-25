@@ -11,7 +11,42 @@ import (
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
 )
 
-func parseXML(filepath string) (*models.XMLTrademark, error) {
+// xmlRoot helps to parse XML tree
+type xmlRoot struct {
+	Transaction  xml.Name     `xml:"Transaction"`
+	XMLTrademark xmlTrademark `xml:"TradeMarkTransactionBody>TransactionContentDetails>TransactionData>TradeMarkDetails>TradeMark"`
+}
+
+// xmlTrademark is XML representation of trademark model
+type xmlTrademark struct {
+	Trademark               xml.Name `xml:"TradeMark"`
+	OperationCode           string   `xml:"operationCode,attr"`
+	RegistrationOfficeCode  string   `xml:"RegistrationOfficeCode"`
+	ApplicationNumber       string   `xml:"ApplicationNumber"`
+	ApplicationDate         string   `xml:"ApplicationDate"`
+	RegistrationDate        string   `xml:"RegistrationDate"`
+	ApplicationLanguageCode string   `xml:"ApplicationLanguageCode"`
+	MarkCurrentStatusCode   string   `xml:"MarkCurrentStatusCode"`
+	SecondLanguageCode      string   `xml:"SecondLanguageCode"`
+	ExpiryDate              string   `xml:"ExpiryDate"`
+	MarkFeature             string   `xml:"MarkFeature"`
+	Name                    string   `xml:"WordMarkSpecification>MarkVerbalElementText"`
+}
+
+// toTrademark converts XMLTrademark to Trademark
+func (trademark *xmlTrademark) toTrademark() *models.Trademark {
+	return &models.Trademark{
+		ApplicationNumber:       trademark.ApplicationNumber,
+		ApplicationDate:         trademark.ApplicationDate,
+		RegistrationDate:        trademark.RegistrationDate,
+		ApplicationLanguageCode: trademark.ApplicationLanguageCode,
+		SecondLanguageCode:      trademark.SecondLanguageCode,
+		ExpiryDate:              trademark.ExpiryDate,
+		Name:                    trademark.Name,
+	}
+}
+
+func parseXML(filepath string) (*xmlTrademark, error) {
 	xmlFile, err := os.Open(filepath)
 	if err != nil {
 		return nil, err
@@ -22,10 +57,10 @@ func parseXML(filepath string) (*models.XMLTrademark, error) {
 		return nil, err
 	}
 
-	var xmlRoot models.XMLRoot
-	xml.Unmarshal(byteValue, &xmlRoot)
-	fmt.Println(xmlRoot)
-	return &xmlRoot.XMLTrademark, nil
+	var root xmlRoot
+	xml.Unmarshal(byteValue, &root)
+	fmt.Println(root)
+	return &root.XMLTrademark, nil
 }
 
 func getXMLPaths(rootpath string) ([]string, error) {
@@ -62,7 +97,7 @@ func getTrademarks(directory string) []*models.Trademark {
 
 		// TODO extract business logic from here
 		if xmlTrademark.OperationCode == "Insert" && xmlTrademark.MarkFeature == "Word" && xmlTrademark.MarkCurrentStatusCode == "Registered" {
-			trademarks = append(trademarks, xmlTrademark.ToTrademark())
+			trademarks = append(trademarks, xmlTrademark.toTrademark())
 		}
 	}
 	return trademarks
