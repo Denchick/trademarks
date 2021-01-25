@@ -1,8 +1,6 @@
 package store
 
 import (
-	"context"
-
 	"github.com/pkg/errors"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/config"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
@@ -10,12 +8,6 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
-
-// TrademarkRepository is a store for trademarks
-type TrademarkRepository interface {
-	FindTrademarkByName(context.Context, string) (*models.DBTrademark, error)
-	FindSimilarTrademarks(ctx context.Context, name string) ([]*models.DBTrademark, error)
-}
 
 // Store contains all repositories
 type Store struct {
