@@ -49,7 +49,7 @@ func run() error {
 		ReadTimeout:  30 * time.Minute,
 		WriteTimeout: 30 * time.Minute,
 	}
-	e.Logger.Print(s)
+	e.Logger.Print(e.StartServer(s))
 
 	return nil
 }
