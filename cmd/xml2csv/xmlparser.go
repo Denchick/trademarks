@@ -104,5 +104,6 @@ func (parser *XMLParser) GetWordTrademarks(directory string) []*models.Trademark
 			parser.logger.Debug().Msgf("%v", xmlTrademark)
 		}
 	}
+	parser.logger.Debug().Msgf("Parsed %d trademarks successfully", len(trademarks))
 	return trademarks
 }
