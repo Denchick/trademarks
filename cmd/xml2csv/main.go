@@ -39,10 +39,11 @@ func main() {
 	parser := NewXMLParser(logger)
 	if len(pathToXmls) == 0 {
 		fmt.Println("Generates csv file with information about trademarks for importing into database.")
-		fmt.Println("Usage: ./xml2csv --directory /path/to/xmls")
+		fmt.Println("Usage: ./xml2csv --directory /path/to/xmls --verbose")
 		return
 	}
 	trademarks := parser.GetWordTrademarks(pathToXmls)
+	parser.logger.Debug().Msgf("Parsed %d trademarks successfully", len(trademarks))
 	writer, err := createCsvWriter()
 	if err != nil {
 		logger.Err(err)

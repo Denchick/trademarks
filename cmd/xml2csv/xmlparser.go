@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/xml"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -91,6 +90,7 @@ func (parser *XMLParser) GetWordTrademarks(directory string) []*models.Trademark
 		return make([]*models.Trademark, 0)
 	}
 
+	parser.logger.Debug().Msgf("Found %d XMLs", len(xmlPaths))
 	trademarks := make([]*models.Trademark, 0, len(xmlPaths))
 	for _, pathToXML := range xmlPaths {
 		xmlTrademark, err := parser.parseXML(pathToXML)
@@ -101,9 +101,8 @@ func (parser *XMLParser) GetWordTrademarks(directory string) []*models.Trademark
 
 		if xmlTrademark.OperationCode == "Insert" && xmlTrademark.MarkFeature == "Word" && xmlTrademark.MarkCurrentStatusCode == "Registered" {
 			trademarks = append(trademarks, xmlTrademark.toTrademark())
-			parser.logger.Debug().Interface("parsed", xmlTrademark)
+			parser.logger.Debug().Msgf("%v", xmlTrademark)
 		}
 	}
-	parser.logger.Debug().Str("result", fmt.Sprintf("Parsed %d trademarks successfully\n", len(trademarks)))
 	return trademarks
 }
