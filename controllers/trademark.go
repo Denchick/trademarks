@@ -4,19 +4,22 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/logger"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/store"
 )
 
 // TrademarkController ...
 type TrademarkController struct {
-	store *store.Store
+	store  *store.Store
+	logger *logger.Logger
 }
 
 // NewTrademark creates a new trademark controller
-func NewTrademark(store *store.Store) *TrademarkController {
+func NewTrademark(store *store.Store, logger *logger.Logger) *TrademarkController {
 	return &TrademarkController{
-		store: store,
+		store:  store,
+		logger: logger,
 	}
 }
 
@@ -27,8 +30,9 @@ func (controller *TrademarkController) Get(c echo.Context) error { // TODO creat
 	fuzzily := c.QueryParam("fuzzily")
 	trademarks, err := controller.getTrademarks(c, name, fuzzily == "true")
 
-	if err != nil || trademarks == nil { // TODO impove error handling
-		return echo.NewHTTPError(http.StatusNotFound, "Could not get trademark")
+	if err != nil {
+		controller.logger.Err(err)
+		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
 	return c.JSON(http.StatusOK, controller.convertTrademarks(trademarks))
@@ -42,10 +46,10 @@ func (controller *TrademarkController) getTrademarks(c echo.Context, name string
 	return []*models.DBTrademark{trademark}, err
 }
 
-func (controller *TrademarkController) convertTrademarks(old []*models.DBTrademark) []*models.Trademark {
-	var new []*models.Trademark
-	for _, trademark := range old {
-		new = append(new, trademark.ToTrademark())
+func (controller *TrademarkController) convertTrademarks(oldTrademarks []*models.DBTrademark) []*models.Trademark {
+	var newTrademarks []*models.Trademark
+	for _, trademark := range oldTrademarks {
+		newTrademarks = append(newTrademarks, trademark.ToTrademark())
 	}
-	return new
+	return newTrademarks
 }

@@ -5,8 +5,11 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/pkg/errors"
+	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/config"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/controllers"
+	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/logger"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/store"
 )
 
@@ -22,23 +25,24 @@ func run() error {
 		return errors.Wrap(err, "store.New failed")
 	}
 
-	e := echo.New()
+	logger := logger.Get(config.Get().LogLevel)
 
-	// API version 1
+	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
 	v1 := e.Group("/v1")
 
-	// Trademark routes
-	trademarksController := controllers.NewTrademark(store)
+	trademarksController := controllers.NewTrademark(store, logger)
 	trademarkRoutes := v1.Group("/trademarks")
 	trademarkRoutes.GET("", trademarksController.Get)
 
-	// ping routes
-	pingRoutes := v1.Group("/ping")
+	pingRoutes := v1.Group("/_ping")
 	pingRoutes.GET("", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
+		return c.NoContent(http.StatusOK)
 	})
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Print(e.Start(":1323")) // TODO read port from the config
 
 	return nil
 }

@@ -4,20 +4,18 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 
+	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/logger"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
 )
 
-// xmlRoot helps to parse XML tree
 type xmlRoot struct {
 	Transaction  xml.Name     `xml:"Transaction"`
 	XMLTrademark xmlTrademark `xml:"TradeMarkTransactionBody>TransactionContentDetails>TransactionData>TradeMarkDetails>TradeMark"`
 }
 
-// xmlTrademark is XML representation of trademark model
 type xmlTrademark struct {
 	Trademark               xml.Name `xml:"TradeMark"`
 	OperationCode           string   `xml:"operationCode,attr"`
@@ -33,7 +31,6 @@ type xmlTrademark struct {
 	Name                    string   `xml:"WordMarkSpecification>MarkVerbalElementText"`
 }
 
-// toTrademark converts XMLTrademark to Trademark
 func (trademark *xmlTrademark) toTrademark() *models.Trademark {
 	return &models.Trademark{
 		ApplicationNumber:       trademark.ApplicationNumber,
@@ -46,7 +43,17 @@ func (trademark *xmlTrademark) toTrademark() *models.Trademark {
 	}
 }
 
-func parseXML(filepath string) (*xmlTrademark, error) {
+// XMLParser ...
+type XMLParser struct {
+	logger *logger.Logger
+}
+
+// NewXMLParser ...
+func NewXMLParser(logger *logger.Logger) *XMLParser {
+	return &XMLParser{logger}
+}
+
+func (parser *XMLParser) parseXML(filepath string) (*xmlTrademark, error) {
 	xmlFile, err := os.Open(filepath)
 	if err != nil {
 		return nil, err
@@ -59,11 +66,10 @@ func parseXML(filepath string) (*xmlTrademark, error) {
 
 	var root xmlRoot
 	xml.Unmarshal(byteValue, &root)
-	fmt.Println(root)
 	return &root.XMLTrademark, nil
 }
 
-func getXMLPaths(rootpath string) ([]string, error) {
+func (parser *XMLParser) getXMLPaths(rootpath string) ([]string, error) {
 	var xmlPaths []string
 	err := filepath.Walk(rootpath, func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
@@ -74,31 +80,30 @@ func getXMLPaths(rootpath string) ([]string, error) {
 		}
 		return nil
 	})
-	if err != nil {
-		return nil, err
-	}
-	return xmlPaths, nil
+	return xmlPaths, err
 }
 
-func getTrademarks(directory string) []*models.Trademark {
-	xmlPaths, err := getXMLPaths(directory)
+// GetWordTrademarks ...
+func (parser *XMLParser) GetWordTrademarks(directory string) []*models.Trademark {
+	xmlPaths, err := parser.getXMLPaths(directory)
 	if err != nil {
-		log.Fatal(err)
+		parser.logger.Err(err)
 		return make([]*models.Trademark, 0)
 	}
 
 	trademarks := make([]*models.Trademark, 0, len(xmlPaths))
 	for _, pathToXML := range xmlPaths {
-		xmlTrademark, err := parseXML(pathToXML)
+		xmlTrademark, err := parser.parseXML(pathToXML)
 		if err != nil {
-			fmt.Println(err)
+			parser.logger.Err(err)
 			continue
 		}
 
-		// TODO extract business logic from here
 		if xmlTrademark.OperationCode == "Insert" && xmlTrademark.MarkFeature == "Word" && xmlTrademark.MarkCurrentStatusCode == "Registered" {
 			trademarks = append(trademarks, xmlTrademark.toTrademark())
+			parser.logger.Debug().Interface("parsed", xmlTrademark)
 		}
 	}
+	parser.logger.Debug().Str("result", fmt.Sprintf("Parsed %d trademarks successfully\n", len(trademarks)))
 	return trademarks
 }
