@@ -3,7 +3,8 @@ version: '3.1'
 services:
 
   server:
-    environment: 
+    environment:
+      - HTTP_ADDR=:1323 
       - PG_URL=postgres://postgres:postgres@postgres/db_trademarks?sslmode=disable
       - LOG_LEVEL=debug
     build: ./

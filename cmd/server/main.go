@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -20,12 +21,13 @@ func main() {
 }
 
 func run() error {
+	cfg := config.Get()
 	store, err := store.New()
 	if err != nil {
 		return errors.Wrap(err, "store.New failed")
 	}
 
-	logger := logger.Get(config.Get().LogLevel)
+	logger := logger.Get(cfg.LogLevel)
 
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -42,7 +44,12 @@ func run() error {
 		return c.NoContent(http.StatusOK)
 	})
 
-	e.Logger.Print(e.Start(":1323")) // TODO read port from the config
+	s := &http.Server{
+		Addr:         cfg.HTTPAddr,
+		ReadTimeout:  30 * time.Minute,
+		WriteTimeout: 30 * time.Minute,
+	}
+	e.Logger.Print(s)
 
 	return nil
 }

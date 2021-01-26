@@ -13,6 +13,7 @@ import (
 type Config struct {
 	LogLevel string `envconfig:"LOG_LEVEL"`
 	PgURL    string `envconfig:"PG_URL"`
+	HTTPAddr string `envconfig:"HTTP_ADDR"`
 }
 
 var (
