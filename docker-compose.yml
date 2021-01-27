@@ -1,5 +1,8 @@
 version: '3.1'
 
+networks:
+  trademarks:
+
 services:
 
   server:
@@ -14,6 +17,8 @@ services:
       - 1323:1323
     depends_on:
       - postgres
+    networks:
+      - trademarks
 
   postgres:
     image: postgres
@@ -22,12 +27,18 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=db_trademarks
+    volumes:
+      - ./store/pg/data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    networks:
+      - trademarks
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    networks:
+      - trademarks
 

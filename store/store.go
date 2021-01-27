@@ -28,7 +28,6 @@ func New() (*Store, error) {
 		Trademark: repositories.NewTrademarkRepository(db),
 	}
 	db.AutoMigrate(&models.DBTrademark{})
-	db.Raw("CREATE EXTENSION pg_trgm;")
 
 	return &store, nil
 }

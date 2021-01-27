@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/logger"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/store"
+	"gorm.io/gorm"
 )
 
 // TrademarkController ...
@@ -24,17 +26,18 @@ func NewTrademark(store *store.Store, logger *logger.Logger) *TrademarkControlle
 }
 
 // Get returns trademark by ID
-func (controller *TrademarkController) Get(c echo.Context) error { // TODO create OpenAPI specification
-	// TODO search should be case insensitive
+func (controller *TrademarkController) Get(c echo.Context) error {
 	name := c.QueryParam("name")
 	fuzzily := c.QueryParam("fuzzily")
 	trademarks, err := controller.getTrademarks(c, name, fuzzily == "true")
 
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return c.NoContent(http.StatusNotFound)
+	}
 	if err != nil {
 		controller.logger.Err(err)
-		return echo.NewHTTPError(http.StatusInternalServerError)
+		return c.NoContent(http.StatusInternalServerError)
 	}
-
 	return c.JSON(http.StatusOK, controller.convertTrademarks(trademarks))
 }
 

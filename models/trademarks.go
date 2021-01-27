@@ -2,13 +2,13 @@ package models
 
 // Trademark is trademark model
 type Trademark struct {
-	ApplicationNumber       string
-	ApplicationDate         string
-	RegistrationDate        string
-	ApplicationLanguageCode string
-	SecondLanguageCode      string
-	ExpiryDate              string
-	Name                    string
+	ApplicationNumber       string `json:"application_number"`
+	ApplicationDate         string `json:"application_date"`
+	RegistrationDate        string `json:"registration_date"`
+	ApplicationLanguageCode string `json:"application_language_code"`
+	SecondLanguageCode      string `json:"second_language_code"`
+	ExpiryDate              string `json:"expiry_date"`
+	Name                    string `json:"name"`
 }
 
 // DBTrademark is database representation of trademark model
