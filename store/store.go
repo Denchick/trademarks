@@ -26,12 +26,12 @@ type Store struct {
 func New() (*Store, error) {
 	pgDB, err := Dial()
 	if err != nil {
-		return nil, errors.Wrap(err, "Postgres dial failed")
+		return nil, errors.Wrap(err, "store.Dial")
 	}
 
 	log.Println("Running PostgreSQL migrations...")
 	if err := runPgMigrations(); err != nil {
-		return nil, errors.Wrap(err, "runPgMigrations failed")
+		return nil, errors.Wrap(err, "store.runPgMigrations")
 	}
 
 	store := &Store{pgDB, repositories.NewTrademarkRepository(pgDB)}

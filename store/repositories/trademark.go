@@ -13,8 +13,6 @@ type TrademarkRepository struct {
 
 // NewTrademarkRepository ...
 func NewTrademarkRepository(db *pg.DB) *TrademarkRepository {
-	// https://www.postgresql.org/docs/13/pgtrgm.html#id-1.11.7.40.8
-	db.Exec("CREATE EXTENSION pg_trgm;")
 	return &TrademarkRepository{db}
 }
 
@@ -25,7 +23,7 @@ func (repository *TrademarkRepository) FindByName(name string) ([]*models.DBTrad
 		Where("name = ?", name).
 		Select()
 	if err != nil && err != pg.ErrNoRows {
-		return nil, errors.Wrap(err, "store.repositories.FindTrademarkByName")
+		return nil, errors.Wrap(err, "store.repositories.FindByName")
 	}
 	return trademarks, nil
 }
@@ -37,5 +35,8 @@ func (repository *TrademarkRepository) FindSimilar(name string) ([]*models.DBTra
 		OrderExpr("? <-> name", name).
 		Limit(3).
 		Select()
-	return trademarks, err
+	if err != nil && err != pg.ErrNoRows {
+		return nil, errors.Wrap(err, "store.repositories.FindSimilar")
+	}
+	return trademarks, nil
 }

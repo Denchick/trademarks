@@ -9,6 +9,10 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
+// Usefull migrate commands
+// $ migrate create -ext sql -dir migrations *name*
+// $ migrate -path migrations -database postgres://postgres:postgres@0.0.0.0/db_trademarks?sslmode=disable force 20210207232148
+
 // runPgMigrations runs Postgres migrations
 func runPgMigrations() error {
 	cfg := config.Get()

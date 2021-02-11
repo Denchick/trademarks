@@ -23,7 +23,7 @@ func run() error {
 	cfg := config.Get()
 	store, err := store.New()
 	if err != nil {
-		return errors.Wrap(err, "store.New failed")
+		return errors.Wrap(err, "store.New")
 	}
 
 	e := echo.New()
