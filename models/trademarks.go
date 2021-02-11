@@ -23,6 +23,11 @@ type DBTrademark struct {
 	Name                    string `gorm:"index"`
 }
 
+// TableName overrides default table name for gorm
+func (DBTrademark) TableName() string {
+	return "trademarks"
+}
+
 // ToTrademark converts DBTrademark to Trademark
 func (trademark *DBTrademark) ToTrademark() *Trademark {
 	return &Trademark{
@@ -35,6 +40,7 @@ func (trademark *DBTrademark) ToTrademark() *Trademark {
 		Name:                    trademark.Name,
 	}
 }
+
 
 // ToDB converts Trademark to DBTrademark
 func (trademark *Trademark) ToDB() *DBTrademark {

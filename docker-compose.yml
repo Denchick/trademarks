@@ -11,6 +11,7 @@ services:
       - HTTP_ADDR=:1323 
       - PG_URL=postgres://postgres:postgres@postgres/db_trademarks?sslmode=disable
       - LOG_LEVEL=debug
+      - PG_MIGRATIONS_PATH=file://home/volkov/Desktop/sandbox/migrations
     build: ./
     command: ["./server"]
     ports:
@@ -27,8 +28,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=db_trademarks
-    volumes:
-      - ./store/pg/data:/var/lib/postgresql/data
     ports:
       - 5432:5432
     networks:

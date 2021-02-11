@@ -1,14 +1,12 @@
 package controllers
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/logger"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/store"
-	"gorm.io/gorm"
 )
 
 // TrademarkController ...
@@ -26,30 +24,27 @@ func NewTrademark(store *store.Store, logger *logger.Logger) *TrademarkControlle
 }
 
 // Get returns trademark by ID
-func (controller *TrademarkController) Get(c echo.Context) error {
+func (ctr *TrademarkController) Get(c echo.Context) error {
 	name := c.QueryParam("name")
 	fuzzily := c.QueryParam("fuzzily")
-	trademarks, err := controller.getTrademarks(c, name, fuzzily == "true")
+	trademarks, err := ctr.getTrademarks(c, name, fuzzily == "true")
 
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return c.NoContent(http.StatusNotFound)
-	}
 	if err != nil {
-		controller.logger.Err(err)
+		ctr.logger.Err(err)
 		return c.NoContent(http.StatusInternalServerError)
 	}
-	return c.JSON(http.StatusOK, controller.convertTrademarks(trademarks))
+	return c.JSON(http.StatusOK, ctr.convertTrademarks(trademarks))
 }
 
-func (controller *TrademarkController) getTrademarks(c echo.Context, name string, fuzzily bool) ([]*models.DBTrademark, error) {
+func (ctr *TrademarkController) getTrademarks(c echo.Context, name string, fuzzily bool) ([]*models.DBTrademark, error) {
 	if fuzzily {
-		return controller.store.Trademark.FindSimilarTrademarks(c.Request().Context(), name)
+		return ctr.store.Trademark.FindSimilarTrademarks(name)
 	}
-	trademark, err := controller.store.Trademark.FindTrademarkByName(c.Request().Context(), name)
+	trademark, err := ctr.store.Trademark.FindTrademarkByName(name)
 	return []*models.DBTrademark{trademark}, err
 }
 
-func (controller *TrademarkController) convertTrademarks(oldTrademarks []*models.DBTrademark) []*models.Trademark {
+func (ctr *TrademarkController) convertTrademarks(oldTrademarks []*models.DBTrademark) []*models.Trademark {
 	var newTrademarks []*models.Trademark
 	for _, trademark := range oldTrademarks {
 		newTrademarks = append(newTrademarks, trademark.ToTrademark())

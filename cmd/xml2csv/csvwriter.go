@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/csv"
-	"fmt"
 	"os"
 
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/logger"
@@ -36,8 +35,8 @@ func (xml2csvWriter *XML2CSVWriter) WriteToFile(filename string, trademarks []*m
 	}
 
 	writer.Write([]string{"application_number", "application_date", "registration_date", "application_language_code", "second_language_code", "expiry_date", "name"})
-	for i, trademark := range trademarks {
-		record := []string{fmt.Sprint(i), trademark.ApplicationNumber, trademark.ApplicationDate, trademark.RegistrationDate, trademark.ApplicationLanguageCode, trademark.SecondLanguageCode, trademark.ExpiryDate, trademark.Name}
+	for _, trademark := range trademarks {
+		record := []string{trademark.ApplicationNumber, trademark.ApplicationDate, trademark.RegistrationDate, trademark.ApplicationLanguageCode, trademark.SecondLanguageCode, trademark.ExpiryDate, trademark.Name}
 		err := writer.Write(record)
 		if err != nil {
 			xml2csvWriter.logger.Err(err)

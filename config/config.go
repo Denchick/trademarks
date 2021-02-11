@@ -11,9 +11,10 @@ import (
 
 // Config ...
 type Config struct {
-	LogLevel string `envconfig:"LOG_LEVEL"`
-	PgURL    string `envconfig:"PG_URL"`
-	HTTPAddr string `envconfig:"HTTP_ADDR"`
+	LogLevel         string `envconfig:"LOG_LEVEL"`
+	PgURL            string `envconfig:"PG_URL"`
+	HTTPAddr         string `envconfig:"HTTP_ADDR"`
+	PgMigrationsPath string `envconfig:"PG_MIGRATIONS_PATH"`
 }
 
 var (
