@@ -1,3 +1,18 @@
+![Github CI/CD](https://img.shields.io/github/workflow/status/denchick/trademarks/Go)
+![Go Report](https://goreportcard.com/badge/github.com/denchick/trademarks)
+![Repository Top Language](https://img.shields.io/github/languages/top/denchick/trademarks)
+![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/quality/g/denchick/trademarks/main)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/denchick/trademarks)
+![Codacy Grade](https://img.shields.io/codacy/grade/c9467ed47e064b1981e53862d0286d65)
+![Github Repository Size](https://img.shields.io/github/repo-size/denchick/trademarks)
+![Github Open Issues](https://img.shields.io/github/issues/denchick/trademarks)
+![Lines of code](https://img.shields.io/tokei/lines/github/denchick/trademarks)
+![License](https://img.shields.io/badge/license-MIT-green)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/denchick/trademarks)
+![GitHub last commit](https://img.shields.io/github/last-commit/denchick/trademarks)
+![GitHub contributors](https://img.shields.io/github/contributors/denchick/trademarks)
+![Simply the best ;)](https://img.shields.io/badge/simply-the%20best%20%3B%29-orange)
+
 # trademarks
 
 In the developed world, businesses can protect their brands by trademark registration. During such a process, the user needs to check whether their trademark is not already taken by someone else—this is roughly similar to how domain registration works. Your job is to write a simple backend-only validation service operating on top of a given trademark database.
