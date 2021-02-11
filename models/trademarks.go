@@ -41,7 +41,6 @@ func (trademark *DBTrademark) ToTrademark() *Trademark {
 	}
 }
 
-
 // ToDB converts Trademark to DBTrademark
 func (trademark *Trademark) ToDB() *DBTrademark {
 	return &DBTrademark{

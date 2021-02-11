@@ -1,7 +1,7 @@
 package store
 
 import (
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
+	"github.com/denchick/trademarks/models"
 )
 
 // TrademarkRepository is a store for trademarks

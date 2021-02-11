@@ -1,9 +1,9 @@
 package store
 
 import (
+	"github.com/denchick/trademarks/config"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/pkg/errors"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/config"
 
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"

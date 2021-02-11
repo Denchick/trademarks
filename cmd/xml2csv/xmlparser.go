@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/logger"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
+	"github.com/denchick/trademarks/logger"
+	"github.com/denchick/trademarks/models"
 )
 
 type xmlRoot struct {

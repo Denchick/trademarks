@@ -3,10 +3,10 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/denchick/trademarks/logger"
+	"github.com/denchick/trademarks/models"
+	"github.com/denchick/trademarks/store"
 	"github.com/labstack/echo/v4"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/logger"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/store"
 )
 
 // TrademarkController ...

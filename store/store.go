@@ -4,10 +4,10 @@ import (
 	"log"
 	"time"
 
+	"github.com/denchick/trademarks/config"
+	"github.com/denchick/trademarks/store/repositories"
 	"github.com/go-pg/pg"
 	"github.com/pkg/errors"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/config"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/store/repositories"
 
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"

@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/denchick/trademarks/config"
+	"github.com/denchick/trademarks/controllers"
+	"github.com/denchick/trademarks/logger"
+	"github.com/denchick/trademarks/store"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/pkg/errors"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/config"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/controllers"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/logger"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/store"
 )
 
 func main() {

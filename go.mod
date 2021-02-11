@@ -1,4 +1,4 @@
-module github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov
+module github.com/denchick/trademarks
 
 go 1.15
 

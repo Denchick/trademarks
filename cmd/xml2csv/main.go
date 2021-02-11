@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/logger"
+	"github.com/denchick/trademarks/logger"
 )
 
 func getParams() (directory string, logLevel string) {

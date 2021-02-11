@@ -1,8 +1,8 @@
 package repositories
 
 import (
+	"github.com/denchick/trademarks/models"
 	"github.com/go-pg/pg"
-	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/models"
 )
 
 // TrademarkRepository ...
