@@ -13,19 +13,15 @@ type Trademark struct {
 
 // DBTrademark is database representation of trademark model
 type DBTrademark struct {
-	ID                      uint
-	ApplicationNumber       string `gorm:"unique"`
-	ApplicationDate         string
-	RegistrationDate        string
-	ApplicationLanguageCode string
-	SecondLanguageCode      string
-	ExpiryDate              string
-	Name                    string `gorm:"index"`
-}
-
-// TableName overrides default table name for gorm
-func (DBTrademark) TableName() string {
-	return "trademarks"
+	tableName               struct{} `pg:"trademarks"`
+	ID                      uint     `pg:"id"`
+	ApplicationNumber       string   `pg:"application_number"`
+	ApplicationDate         string   `pg:"application_date"`
+	RegistrationDate        string   `pg:"registration_date"`
+	ApplicationLanguageCode string   `pg:"application_language_code"`
+	SecondLanguageCode      string   `pg:"second_language_code"`
+	ExpiryDate              string   `pg:"expiry_date"`
+	Name                    string   `pg:"name"`
 }
 
 // ToTrademark converts DBTrademark to Trademark

@@ -3,23 +3,21 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/denchick/trademarks/logger"
 	"github.com/denchick/trademarks/models"
 	"github.com/denchick/trademarks/store"
 	"github.com/labstack/echo/v4"
+	"github.com/pkg/errors"
 )
 
 // TrademarkController ...
 type TrademarkController struct {
 	store  *store.Store
-	logger *logger.Logger
 }
 
 // NewTrademark creates a new trademark controller
-func NewTrademark(store *store.Store, logger *logger.Logger) *TrademarkController {
+func NewTrademark(store *store.Store) *TrademarkController {
 	return &TrademarkController{
 		store:  store,
-		logger: logger,
 	}
 }
 
@@ -30,21 +28,22 @@ func (ctr *TrademarkController) Get(c echo.Context) error {
 	trademarks, err := ctr.getTrademarks(c, name, fuzzily == "true")
 
 	if err != nil {
-		ctr.logger.Err(err)
-		return c.NoContent(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, errors.Wrap(err, "could not get trademark"))
 	}
-	return c.JSON(http.StatusOK, ctr.convertTrademarks(trademarks))
+	if len(trademarks) == 0 {
+		return c.NoContent(http.StatusNotFound)
+	}
+	return c.JSON(http.StatusOK, ctr.convert(trademarks))
 }
 
 func (ctr *TrademarkController) getTrademarks(c echo.Context, name string, fuzzily bool) ([]*models.DBTrademark, error) {
 	if fuzzily {
-		return ctr.store.Trademark.FindSimilarTrademarks(name)
+		return ctr.store.Trademark.FindSimilar(name)
 	}
-	trademark, err := ctr.store.Trademark.FindTrademarkByName(name)
-	return []*models.DBTrademark{trademark}, err
+	return ctr.store.Trademark.FindByName(name)
 }
 
-func (ctr *TrademarkController) convertTrademarks(oldTrademarks []*models.DBTrademark) []*models.Trademark {
+func (ctr *TrademarkController) convert(oldTrademarks []*models.DBTrademark) []*models.Trademark {
 	var newTrademarks []*models.Trademark
 	for _, trademark := range oldTrademarks {
 		newTrademarks = append(newTrademarks, trademark.ToTrademark())

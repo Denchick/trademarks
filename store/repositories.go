@@ -6,6 +6,6 @@ import (
 
 // TrademarkRepository is a store for trademarks
 type TrademarkRepository interface {
-	FindTrademarkByName(name string) (*models.DBTrademark, error)
-	FindSimilarTrademarks(name string) ([]*models.DBTrademark, error)
+	FindByName(name string) ([]*models.DBTrademark, error)
+	FindSimilar(name string) ([]*models.DBTrademark, error)
 }

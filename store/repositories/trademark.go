@@ -2,7 +2,8 @@ package repositories
 
 import (
 	"github.com/denchick/trademarks/models"
-	"github.com/go-pg/pg"
+	"github.com/go-pg/pg/v10"
+	"github.com/pkg/errors"
 )
 
 // TrademarkRepository ...
@@ -17,19 +18,22 @@ func NewTrademarkRepository(db *pg.DB) *TrademarkRepository {
 	return &TrademarkRepository{db}
 }
 
-// FindTrademarkByName retrieves trademark from DB
-func (repository *TrademarkRepository) FindTrademarkByName(name string) (*models.DBTrademark, error) {
-	trademark := &models.DBTrademark{}
-	err := repository.db.Model(trademark).
+// FindByName retrieves trademark from DB
+func (repository *TrademarkRepository) FindByName(name string) ([]*models.DBTrademark, error) {
+	var trademarks []*models.DBTrademark
+	err := repository.db.Model(&trademarks).
 		Where("name = ?", name).
-		First()
-	return trademark, err
+		Select()
+	if err != nil && err != pg.ErrNoRows {
+		return nil, errors.Wrap(err, "store.repositories.FindTrademarkByName")
+	}
+	return trademarks, nil
 }
 
-// FindSimilarTrademarks retrieves similar trademarks from DB
-func (repository *TrademarkRepository) FindSimilarTrademarks(name string) ([]*models.DBTrademark, error) {
+// FindSimilar retrieves similar trademarks from DB
+func (repository *TrademarkRepository) FindSimilar(name string) ([]*models.DBTrademark, error) {
 	var trademarks []*models.DBTrademark
-	err := repository.db.Model(trademarks).
+	err := repository.db.Model(&trademarks).
 		OrderExpr("? <-> name", name).
 		Limit(3).
 		Select()

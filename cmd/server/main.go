@@ -7,7 +7,6 @@ import (
 
 	"github.com/denchick/trademarks/config"
 	"github.com/denchick/trademarks/controllers"
-	"github.com/denchick/trademarks/logger"
 	"github.com/denchick/trademarks/store"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -27,15 +26,13 @@ func run() error {
 		return errors.Wrap(err, "store.New failed")
 	}
 
-	logger := logger.Get(cfg.LogLevel)
-
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
 	v1 := e.Group("/v1")
 
-	trademarksController := controllers.NewTrademark(store, logger)
+	trademarksController := controllers.NewTrademark(store)
 	trademarkRoutes := v1.Group("/trademarks")
 	trademarkRoutes.GET("", trademarksController.Get)
 

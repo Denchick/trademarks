@@ -6,7 +6,7 @@ import (
 
 	"github.com/denchick/trademarks/config"
 	"github.com/denchick/trademarks/store/repositories"
-	"github.com/go-pg/pg"
+	"github.com/go-pg/pg/v10"
 	"github.com/pkg/errors"
 
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
