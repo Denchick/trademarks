@@ -11,7 +11,7 @@ services:
       - HTTP_ADDR=:1323 
       - PG_URL=postgres://postgres:postgres@postgres/db_trademarks?sslmode=disable
       - LOG_LEVEL=debug
-      - PG_MIGRATIONS_PATH=file://home/volkov/Desktop/sandbox/migrations
+      - PG_MIGRATIONS_PATH=file://../../migrations
     build: ./
     command: ["./server"]
     ports:

@@ -1,16 +1,16 @@
 package store
 
 import (
-	"fmt"
 	"log"
-	"os/exec"
 	"time"
 
 	"github.com/go-pg/pg"
-	"github.com/golang-migrate/migrate"
 	"github.com/pkg/errors"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/config"
 	"github.com/vacuumlabs-interviews/3rd-round-Denis-Volkov/store/repositories"
+
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 // Timeout is a Postgres timeout
@@ -88,37 +88,4 @@ func Dial() (*pg.DB, error) {
 	pgDB.WithTimeout(time.Second * time.Duration(Timeout))
 
 	return pgDB, nil
-}
-
-// runPgMigrations runs Postgres migrations
-func runPgMigrations() error {
-	cfg := config.Get()
-	if cfg.PgMigrationsPath == "" {
-		return nil
-	}
-	if cfg.PgURL == "" {
-		return errors.New("No cfg.PgURL provided")
-	}
-	fmt.Println(Native())
-	m, err := migrate.New(
-		cfg.PgMigrationsPath,
-		cfg.PgURL,
-	)
-	if err != nil {
-		return err
-	}
-	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
-		return err
-	}
-	return nil
-}
-
-// Native ...
-func Native() string {
-	cmd, err := exec.Command("/bin/sh", "tree").Output()
-	if err != nil {
-		fmt.Printf("error %s", err)
-	}
-	output := string(cmd)
-	return output
 }
