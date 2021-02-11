@@ -1,7 +1,7 @@
 ![Github CI/CD](https://img.shields.io/github/workflow/status/denchick/trademarks/Go)
 ![Go Report](https://goreportcard.com/badge/github.com/denchick/trademarks)
 ![Repository Top Language](https://img.shields.io/github/languages/top/denchick/trademarks)
-![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/quality/g/denchick/trademarks/main)
+![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/quality/g/denchick/trademarks/master)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/denchick/trademarks)
 ![Codacy Grade](https://img.shields.io/codacy/grade/c9467ed47e064b1981e53862d0286d65)
 ![Github Repository Size](https://img.shields.io/github/repo-size/denchick/trademarks)
