@@ -6,7 +6,7 @@
 
 # trademarks ™️
 
-Businesses can protect their brands by trademark registration. During such a process, the user needs to check whether their trademark is not already taken by someone else—this is roughly similar to how domain registration works. There is a special organization responsible for managing the EU trade mark and the registered Community design - * European Union Intellectual Property Office*. They put all the information about the trademark registration process in the public domain, so we can use them.
+Businesses can protect their brands by trademark registration. During such a process, the user needs to check whether their trademark is not already taken by someone else—this is roughly similar to how domain registration works. There is a special organization responsible for managing the EU trade mark and the registered Community design - *European Union Intellectual Property Office*. They put all the information about the trademark registration process in the public domain, so we can use them.
 
 I wrote the service that check if there was already registered exact or similar trademark.
 
@@ -17,7 +17,7 @@ I wrote the service that check if there was already registered exact or similar 
 
 ## Before the start
 
-Before the start, we should download and prepare data for the database. We need files inside the `ftp://ftp.euipo.europa.eu/Trademark/Full/2019` folder starting with `EUTMS_`. Let's download and unzip them:
+Before the start, we should download and prepare data for the database. We need files inside the `ftp://ftp.euipo.europa.eu/Trademark/Full/2019`(username: `opendata` password: `kagar1n`) folder starting with `EUTMS_`. Let's download and unzip them:
 
 ```bash
 TRADEMARKS_DIR=$(mktemp -d)
