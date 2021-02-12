@@ -8,9 +8,6 @@ import (
 	"github.com/denchick/trademarks/store/repositories"
 	"github.com/go-pg/pg/v10"
 	"github.com/pkg/errors"
-
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 // Timeout is a Postgres timeout
@@ -37,34 +34,6 @@ func New() (*Store, error) {
 	store := &Store{pgDB, repositories.NewTrademarkRepository(pgDB)}
 
 	return store, nil
-}
-
-// KeepAlivePollPeriod is a Pg/MySQL keepalive check time period
-const KeepAlivePollPeriod = 3
-
-// KeepAlivePg makes sure PostgreSQL is alive and reconnects if needed
-func (store *Store) KeepAlivePg() {
-	var err error
-	for {
-		// Check if PostgreSQL is alive every 3 seconds
-		time.Sleep(time.Second * KeepAlivePollPeriod)
-		lostConnect := false
-		if store.DB == nil {
-			lostConnect = true
-		} else if _, err = store.DB.Exec("SELECT 1"); err != nil {
-			lostConnect = true
-		}
-		if !lostConnect {
-			continue
-		}
-		log.Println("[store.KeepAlivePg] Lost PostgreSQL connection. Restoring...")
-		store.DB, err = Dial()
-		if err != nil {
-			log.Fatal(err)
-			continue
-		}
-		log.Println("[store.KeepAlivePg] PostgreSQL reconnected")
-	}
 }
 
 // Dial creates new database connection to postgres
