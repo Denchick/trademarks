@@ -19,8 +19,8 @@ type Store struct {
 	Trademark TrademarkRepository
 }
 
-// New creates new store
-func New() (*Store, error) {
+// NewStore creates new store
+func NewStore() (*Store, error) {
 	pgDB, err := Dial()
 	if err != nil {
 		return nil, errors.Wrap(err, "store.Dial")

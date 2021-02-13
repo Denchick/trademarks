@@ -7,6 +7,7 @@ import (
 
 	"github.com/denchick/trademarks/config"
 	"github.com/denchick/trademarks/controllers"
+	"github.com/denchick/trademarks/service"
 	"github.com/denchick/trademarks/store"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -21,18 +22,28 @@ func main() {
 
 func run() error {
 	cfg := config.Get()
-	store, err := store.New()
+
+	// Init store
+	store, err := store.NewStore()
 	if err != nil {
-		return errors.Wrap(err, "store.New")
+		return errors.Wrap(err, "store.NewStore")
+	}
+	
+	// Init manager
+	manager, err := service.NewManager(store)
+	if err != nil {
+		return errors.Wrap(err, "manager.NewManager")
 	}
 
+	// Initialize Echo instance
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	// Init controllers
 	v1 := e.Group("/v1")
 
-	trademarksController := controllers.NewTrademark(store)
+	trademarksController := controllers.NewTrademark(manager)
 	trademarkRoutes := v1.Group("/trademarks")
 	trademarkRoutes.GET("", trademarksController.Get)
 
@@ -41,6 +52,7 @@ func run() error {
 		return c.NoContent(http.StatusOK)
 	})
 
+	// Start server
 	s := &http.Server{
 		Addr:         cfg.HTTPAddr,
 		ReadTimeout:  30 * time.Minute,
