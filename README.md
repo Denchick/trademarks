@@ -47,4 +47,4 @@ rm *.zip
 Database is ready!
 
 - To search exact trademark: `http://localhost:1323/v1/trademarks?name=UNISON`
-- To search nearest trademark: `http://localhost:1323/v1/trademarks?name=uniso&fuzzily=true`
+- To search nearest trademark: `http://localhost:1323/v1/trademarks?name=uniso&similar=true`

@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/denchick/trademarks/models"
 	"github.com/denchick/trademarks/store"
+	"github.com/pkg/errors"
 )
 
 // TrademarkService ...
@@ -19,7 +20,7 @@ func NewTrademarkService(store *store.Store) *TrademarkService {
 func (service *TrademarkService) GetTrademarks(name string, similar bool) ([]*models.Trademark, error) {
 	trademarks, err := service.getTrademarks(name, similar)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "services.GetTrademarks")
 	}
 	return service.toWeb(trademarks), nil
 }

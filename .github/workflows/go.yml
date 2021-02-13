@@ -33,3 +33,6 @@ jobs:
 
     - name: Build
       run: go build -v ./cmd/server ./cmd/xml2csv
+
+    - name: Test
+      run: go test -v ./...

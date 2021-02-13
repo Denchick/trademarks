@@ -13,8 +13,8 @@ type TrademarkController struct {
 	services *service.Manager
 }
 
-// NewTrademark creates a new trademark controller
-func NewTrademark(services *service.Manager) *TrademarkController {
+// NewTrademarkController creates a new trademark controller
+func NewTrademarkController(services *service.Manager) *TrademarkController {
 	return &TrademarkController{services}
 }
 

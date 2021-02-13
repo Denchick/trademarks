@@ -43,7 +43,7 @@ func run() error {
 	// Init controllers
 	v1 := e.Group("/v1")
 
-	trademarksController := controllers.NewTrademark(manager)
+	trademarksController := controllers.NewTrademarkController(manager)
 	trademarkRoutes := v1.Group("/trademarks")
 	trademarkRoutes.GET("", trademarksController.Get)
 
